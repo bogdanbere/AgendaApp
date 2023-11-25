@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/esm/Container';
 import Program from './program';
 import Formular from "./formular";
 import Lipsa from "./lipsa";
+import "./app.css";
 import { Route, Routes } from "react-router-dom";
 
 export default function App() {
