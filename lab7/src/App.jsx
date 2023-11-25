@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/esm/Container';
 import Program from './program';
 import Formular from "./formular";
+import Lipsa from "./lipsa";
+import { Route, Routes } from "react-router-dom";
 
 export default function App() {
   const [lista, setLista] = useState([]);
@@ -20,8 +22,11 @@ export default function App() {
 
   return (
     <Container style={stil.container}>
-        <Program activitati={lista} sterge={stergActiv} />
-        <Formular transmit={adaugaActiv} />
+      <Routes>
+        <Route path="/" element={<Program activitati={lista} sterge={stergActiv} />} />
+        <Route path="/formular" element={<Formular transmit={adaugaActiv} />} />
+        <Route path="*" element={<Lipsa />} />
+      </Routes>
     </Container>
   );
 }
