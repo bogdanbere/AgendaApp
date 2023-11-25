@@ -15,6 +15,7 @@ const Formular = (props) => {
   const tratezSubmit = (evt) => {
     evt.preventDefault();
     const activitate = { ora, titlu, loc, descriere };
+    console.log(activitate);
     props.transmit(activitate); //  Transmit spre App obiectul "activitate"
     //  Golesc controalele formularului
     setOra("");
