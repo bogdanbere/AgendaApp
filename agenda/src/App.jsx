@@ -5,15 +5,23 @@ import Program from './program';
 import Formular from "./formular";
 import Lipsa from "./lipsa";
 import "./app.css";
-import { Route, Routes, NavLink } from "react-router-dom";
+import { Route, Routes, NavLink, useNavigate } from "react-router-dom";
 
 export default function App() {
   const [lista, setLista] = useState([]);
+  const [edit, setEdit] = useState({
+    id: 0,
+    ora: "",
+    titlu: "",
+    loc: "",
+    descriere: "",
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:5050/")
-        .then((rezultat) => rezultat.json())
-        .then((data) => setLista(data));
+      .then((rezultat) => rezultat.json())
+      .then((data) => setLista(data));
   }, []);
 
   const stergActiv = (id) => {
@@ -23,7 +31,7 @@ export default function App() {
         "Content-type": "application/json",
       },
     };
-    fetch(`http://localhost:5050/sterg/${id}`, config) // Ruta catre server, diferita pentru fiecare aplicatie in CodeSandbox
+    fetch(`http://localhost:5050/sterg/${id}`, config)
       .then((resp) => resp.json())
       .then((data) => {
         setLista(data);
@@ -31,7 +39,7 @@ export default function App() {
   };
 
   const adaugaActiv = (act) => {
-    act.id = lista.at(-1) ? lista.at(-1).id + 1 : 1;  // Cream un id nou si unic pentru fiecare nou obiect in fisier
+    act.id = lista.at(-1) ? lista.at(-1).id + 1 : 1;
     const config = {
       method: "POST",
       body: JSON.stringify(act),
@@ -39,22 +47,61 @@ export default function App() {
         "Content-type": "application/json",
       },
     };
-    fetch("https://localhost:5050/adaug", config) // Ruta catre server, diferita pentru fiecare aplicatie in CodeSandbox
+    fetch("http://localhost:5050/adaug", config)
       .then((resp) => resp.json())
       .then((data) => {
         setLista(data);
+        navigate("/");
       });
+  };
+
+  const editeazaActiv = (id) => {
+    var obiect = lista.find((item) => +item.id === +id);
+    if (obiect) {
+      setEdit({
+        id: obiect.id,
+        ora: obiect.ora,
+        titlu: obiect.titlu,
+        loc: obiect.loc,
+        descriere: obiect.descriere,
+      });
+
+      navigate("/formular");
+    }
+  };
+
+  const editActiv = (elm) => {
+    const config = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(elm),
+    };
+
+    fetch("http://localhost:5050/editez", config)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setLista(data);
+        navigate("/");
+      });
+
+    setEdit({
+      id: 0,
+      ora: "",
+      titlu: "",
+      loc: "",
+      descriere: "",
+    });
   };
 
   const stil = {
     container: { maxWidth: "700px" },
-    h2: { textAlign: "center" }
+    h2: { textAlign: "center" },
   };
 
   return (
     <Container style={stil.container}>
       <Navbar bg="primary" variant="dark" expand="sm" className="p-2">
-        <Navbar.Brand href="/">Home</Navbar.Brand>
+        <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
@@ -76,9 +123,20 @@ export default function App() {
       <Routes>
         <Route
           path="/"
-          element={<Program activitati={lista} sterge={stergActiv} />}
+          element={
+            <Program
+              activitati={lista}
+              sterge={stergActiv}
+              editeaza={editeazaActiv}
+            />
+          }
         />
-        <Route path="/formular" element={<Formular transmit={adaugaActiv} />} />
+        <Route
+          path="/formular"
+          element={
+            <Formular transmit={adaugaActiv} obedit={edit} editez={editActiv} />
+          }
+        />
         <Route path="*" element={<Lipsa />} />
       </Routes>
     </Container>

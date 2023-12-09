@@ -3,10 +3,11 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 const Formular = (props) => {
-  const [ora, setOra] = useState("");
-  const [titlu, setTitlu] = useState("");
-  const [loc, setLoc] = useState("");
-  const [descriere, setDescriere] = useState("");
+  const [id, setId] = useState(props.obedit.id);
+  const [ora, setOra] = useState(props.obedit.ora);
+  const [titlu, setTitlu] = useState(props.obedit.titlu);
+  const [loc, setLoc] = useState(props.obedit.loc);
+  const [descriere, setDescriere] = useState(props.obedit.descriere);
 
   const stil = {
     h2: { textAlign: "center" }
@@ -14,19 +15,19 @@ const Formular = (props) => {
 
   const tratezSubmit = (evt) => {
     evt.preventDefault();
-    const activitate = { ora, titlu, loc, descriere };
-    props.transmit(activitate); //  Transmit spre App obiectul "activitate"
-    //  Golesc controalele formularului
-    setOra("");
-    setTitlu("");
-    setLoc("");
-    setDescriere("");
-  };
+    const activitate = { ora, titlu, loc, descriere};
+    if (id === 0) {
+      props.transmit(activitate);
+    } else {
+      activitate.id = id;
+      props.editez(activitate);
+    }
+  }; 
 
   return (
     <>
       <h2 className="mt-4" style={stil.h2}>
-        Activitate nouă
+        {id === 0 ? "Activitate noua" : "Editare activitate"}
       </h2>
       <hr />
       <Form onSubmit={tratezSubmit}>
