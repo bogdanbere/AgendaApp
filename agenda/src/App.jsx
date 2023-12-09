@@ -44,7 +44,7 @@ export default function App() {
         "Content-type": "application/json",
       },
     };
-    fetch("https://u8n8oe-5050.csb.app/adaug", config) // Ruta catre server, diferita pentru fiecare aplicatie in CodeSandbox
+    fetch("https://localhost:5050/adaug", config) // Ruta catre server, diferita pentru fiecare aplicatie in CodeSandbox
       .then((resp) => resp.json())
       .then((data) => {
         setLista(data);
