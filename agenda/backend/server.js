@@ -17,8 +17,6 @@ const citesteLista = () => {
 
 citesteLista();
 
-const listaJson = JSON.stringify(lista);
-
 app.get("/", (req, res) => {
     citesteLista();
     res.status(200).send(lista);
