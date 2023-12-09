@@ -30,11 +30,6 @@ export default function App() {
       });
   };
 
-  const stil = {
-    container: { maxWidth: "700px" },
-    h2: { textAlign: "center" }
-  };
-
   const adaugaActiv = (act) => {
     act.id = lista.at(-1) ? lista.at(-1).id + 1 : 1;  // Cream un id nou si unic pentru fiecare nou obiect in fisier
     const config = {
@@ -49,6 +44,11 @@ export default function App() {
       .then((data) => {
         setLista(data);
       });
+  };
+
+  const stil = {
+    container: { maxWidth: "700px" },
+    h2: { textAlign: "center" }
   };
 
   return (
