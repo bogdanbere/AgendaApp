@@ -22,6 +22,23 @@ app.get("/", (req, res) => {
     res.status(200).send(lista);
 });
 
+app.post("/adaug", (req, res) => {
+    const listaNoua = JSON.stringify([...lista, req.body]);
+    fs.writeFileSync(`/lista.json`, listaNoua);
+    citesteLista();
+    res.status(200).send(lista);
+});
+
+app.delete("/sterg/:id", (req, res) => {
+    const id = req.params.id;
+    const listaFiltrata = lista.filter(
+        (item) => parseInt(item.id, 10) !== parseInt(id, 10)
+    );
+    fs.writeFileSync(`./lista.json`, JSON.stringify(listaFiltrata));
+    citesteLista();
+    res.status(200).send(lista);
+});
+
 app.listen(port, () => {
     console.log(`Serverul asteapta comenzi pe portul ${port}`);
 });
