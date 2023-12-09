@@ -17,13 +17,17 @@ export default function App() {
   }, []);
 
   const stergActiv = (id) => {
-    const listaNoua = lista.filter((item) => {
-      if (item.id !== parseInt(id, 10)) {
-        return true;
-      }
-      return false;
-    });
-    setLista([...listaNoua]);
+    const config = {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    fetch(`http://localhost:5050/sterg/${id}`, config) // Ruta catre server, diferita pentru fiecare aplicatie in CodeSandbox
+      .then((resp) => resp.json())
+      .then((data) => {
+        setLista(data);
+      });
   };
 
   const stil = {
@@ -32,8 +36,19 @@ export default function App() {
   };
 
   const adaugaActiv = (act) => {
-    act.id = lista.length + 1;
-    setLista([...lista, act]);
+    act.id = lista.at(-1) ? lista.at(-1).id + 1 : 1;  // Cream un id nou si unic pentru fiecare nou obiect in fisier
+    const config = {
+      method: "POST",
+      body: JSON.stringify(act),
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    fetch("https://u8n8oe-5050.csb.app/adaug", config) // Ruta catre server, diferita pentru fiecare aplicatie in CodeSandbox
+      .then((resp) => resp.json())
+      .then((data) => {
+        setLista(data);
+      });
   };
 
   return (
