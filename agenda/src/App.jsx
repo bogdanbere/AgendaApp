@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Navbar, Nav} from 'react-bootstrap';
 import Program from './program';
@@ -9,6 +9,12 @@ import { Route, Routes, NavLink } from "react-router-dom";
 
 export default function App() {
   const [lista, setLista] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5050/")
+        .then((rezultat) => rezultat.json())
+        .then((data) => setLista(data));
+  }, []);
 
   const stergActiv = (id) => {
     const listaNoua = lista.filter((item) => {
