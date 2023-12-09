@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:backend": "nodemon server.js"
   },
-  "author": "",
+  "author": "Radu-Bogdan Bere",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
